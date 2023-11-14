@@ -1,27 +1,13 @@
 import React from "react";
 import BookModel from "../models/BookModel";
+import { my_request } from "./Request";
 
-async function request(endpoint:string) {
-
-    // Get Data
-    const response =  await fetch(endpoint);
-    if(!response.ok){
-        throw new Error(`Can't access Endpoint \"${endpoint}\"`);
-    }
-    return response.json();
-}
-
-export async function getAllBooks(): Promise<BookModel[]> {
+async function getBooks(endpoint:string) {
     const result: BookModel[] = [];
     
-    // Endpoint
-    const endpoint: string = 'http://localhost:8081/books';
-    // const endpoint: string = 'https://api.publicapis.org/entries';
-    
     // Use "request" function
-    const response = await request(endpoint);
-    console.log(response)
-    // console.log(response);
+    const response = await my_request(endpoint);
+
     // Get json of "Book"
     const responseData = response._embedded.books;
     console.log(responseData);
@@ -39,4 +25,12 @@ export async function getAllBooks(): Promise<BookModel[]> {
     }
 
     return result;
+}
+
+export async function getAllBooks(): Promise<BookModel[]> {
+    return getBooks("http://localhost:8081/books");
+}
+
+export async function getThreeNewestBooks(): Promise<BookModel[]> {
+    return getBooks("http://localhost:8081/books?sort=bookId,desc&page=0&size=3");;
 }

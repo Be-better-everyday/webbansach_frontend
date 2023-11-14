@@ -1,44 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getThreeNewestBooks } from "../../../api/BookAPI";
+import BookModel from "../../../models/BookModel";
+import CarouselItem from "./CarouselItem";
 
-function Carousel() {
+const Carousel: React.FC = () => {
+
+    const [bookList, setBookList] = useState<BookModel[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [error, setError] = useState(null);
+
+
+    useEffect(() => {
+        getThreeNewestBooks().then(
+            bookData => {
+                setBookList(bookData);
+                setIsLoading(false);
+            }
+        ).catch(
+            error => {
+                setError(error);
+            }
+        );
+    }, []);
+
+    if (isLoading) return (
+        <div>
+            <h1>Data is loading</h1>
+        </div>
+    );
+
+    if (error) return (
+        <div>
+            <h1>
+                An Error has occurred: {error}
+            </h1>
+        </div>
+    );
+
+
     return (
         <div>
             <div id="carouselExampleDark" className="carousel carousel-dark slide">
                 <div className="carousel-inner">
                     <div className="carousel-item active" data-bs-interval="10000">
-                        <div className="row align-items-center">
-                            <div className="col-5 text-center">
-                                <img src={'./../images/books/1.png'} className="float-end" style={{ width: '150px' }} alt="" />
-                            </div>
-                            <div className="col-7 text-align-left">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
-                            </div>
-                        </div>
+                        <CarouselItem key={0} book={bookList[0]} />
                     </div>
-                    <div className="carousel-item " data-bs-interval="10000">
-                        <div className="row align-items-center">
-                            <div className="col-5 text-center">
-                                <img src={'./../images/books/2.png'} className="float-end" style={{ width: '150px' }} alt="" />
-                            </div>
-                            <div className="col-7">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
-                            </div>
-                        </div>
+                    <div className="carousel-item active" data-bs-interval="10000">
+                        <CarouselItem key={1} book={bookList[1]} />
                     </div>
-                    <div className="carousel-item " data-bs-interval="10000">
-                        <div className="row align-items-center">
-                            <div className="col-5 text-center">
-                                <img src={'./../images/books/3.png'} className="float-end" style={{ width: '150px' }} alt="" />
-                            </div>
-                            <div className="col-7">
-                                <h5>First slide label</h5>
-                                <p>Some representative placeholder content for the first slide.</p>
-                            </div>
-                        </div>
+                    <div className="carousel-item active" data-bs-interval="10000">
+                        <CarouselItem key={2} book={bookList[2]} />
                     </div>
                 </div>
+                
                 <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span className="visually-hidden">Previous</span>
