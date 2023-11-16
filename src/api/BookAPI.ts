@@ -2,7 +2,14 @@ import React from "react";
 import BookModel from "../models/BookModel";
 import { my_request } from "./Request";
 
-async function getBooks(endpoint:string) {
+interface bookResultInterface {
+    result: BookModel[];
+    totalPages: number;
+    // totalBooksInAPage: number; // number of book in a page
+    totalBooks: number;
+}
+
+async function getBooks(endpoint:string): Promise<bookResultInterface> {
     const result: BookModel[] = [];
     
     // Use "request" function
@@ -10,7 +17,12 @@ async function getBooks(endpoint:string) {
 
     // Get json of "Book"
     const responseData = response._embedded.books;
-    console.log(responseData);
+
+    // get pageData
+    const totalPages: number = response.page.totalPages;
+    // const totalBooksInAPage: number = response.page.totalElements;
+    const totalBooks: number = response.page.totalElements;
+
     for (const key in responseData) {
         result.push({
             bookId: responseData[key].bookId,
@@ -24,13 +36,31 @@ async function getBooks(endpoint:string) {
         })
     }
 
-    return result;
+    return {result: result, totalPages: totalPages, totalBooks: totalBooks};
 }
 
-export async function getAllBooks(): Promise<BookModel[]> {
-    return getBooks("http://localhost:8081/books");
+export async function getAllBooks(size: number, currentPage:number): Promise<bookResultInterface> {
+    const endpoint = `http://localhost:8081/books?page=${currentPage-1}&size=${size}&sort=bookId,asc`;
+    console.log(endpoint);
+    return getBooks(endpoint);
 }
 
-export async function getThreeNewestBooks(): Promise<BookModel[]> {
-    return getBooks("http://localhost:8081/books?sort=bookId,desc&page=0&size=3");;
+export async function getThreeNewestBooks(): Promise<bookResultInterface> {
+    const endpoint = `http://localhost:8081/books?sort=bookId,asc&page=0&size=3`;
+    console.log(endpoint);
+    return getBooks(endpoint);
+};
+
+// export async function findBooksByName(bookName:string) {
+//     let endpoint = `http://localhost:8081/books?page=0&size=8&sort=bookId,asc`;
+//     if(bookName.trim() !== ""){
+//         endpoint = `http://localhost:8081/books/search/findByBookNameContaining?page=0&size=8&sort=bookId,asc&bookName=${bookName}`;
+//     }
+//     return getBooks(endpoint);
+// }
+
+export async function findBooksByName(bookName:string, size: number, currentPage:number): Promise<bookResultInterface> {
+    const endpoint = `http://localhost:8081/books/search/findByBookNameContaining?page=${currentPage-1}&size=${size}&sort=bookId,asc&bookName=${bookName}`;
+    console.log(endpoint);
+    return getBooks(endpoint);
 }

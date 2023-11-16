@@ -7,11 +7,11 @@ export async function getAllImages(endpoint: string): Promise<ImageModel[]> {
     
     // Use "request" function
     const response = await my_request(endpoint);
-    console.log(response)
+    // console.log(response)
     // console.log(response);
     // Get json of "Book"
     const responseData = response._embedded.images;
-    console.log(responseData);
+    // console.log(responseData);
     for (const key in responseData) {
         result.push({
             imageId: responseData[key].imageId,

@@ -8,12 +8,12 @@ const Carousel: React.FC = () => {
     const [bookList, setBookList] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState(null);
-
+    // const []
 
     useEffect(() => {
         getThreeNewestBooks().then(
             bookData => {
-                setBookList(bookData);
+                setBookList(bookData.result);
                 setIsLoading(false);
             }
         ).catch(
@@ -67,3 +67,5 @@ const Carousel: React.FC = () => {
 }
 
 export default Carousel;
+
+

@@ -1,6 +1,20 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    bookNameKey: string;
+    setBookNameKey: (bookName: string) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({bookNameKey, setBookNameKey}) => {
+
+    const onSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setBookNameKey(e.target.value);
+    }
+
+    const handleSearch = () => {
+        setBookNameKey(bookNameKey);
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
@@ -41,10 +55,10 @@ const Navbar: React.FC = () => {
                 </div>
 
                 {/* Tìm kiếm */}
-                <form className="d-flex">
-                    <input className="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" />
-                    <button className="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <div className="d-flex">
+                    <input className="form-control me-2" type="search" placeholder="Tìm kiếm" aria-label="Search" onChange={onSearchInputChange} value={bookNameKey}/>
+                    <button className="btn btn-outline-success" type="submit" onClick={handleSearch}>Search</button>
+                </div>
 
                 {/* Biểu tượng giỏ hàng */}
                 <ul className="navbar-nav me-1">

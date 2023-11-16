@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Footer from "./layouts/header-footer/Footer";
 import Navbar from "./layouts/header-footer/Navbar";
 import HomePage from "./layouts/homepage/HomePage";
-import { getAllBooks } from "./api/BookAPI";
 
 function App() {
-  getAllBooks().then().catch();
+  const [bookNameKey, setBookNameKey] = useState("");
+
 
   return (
     <div className="App">
-      <Navbar />
-      <HomePage />
+      <Navbar bookNameKey={bookNameKey} setBookNameKey={setBookNameKey} />
+      <HomePage bookNameKey={bookNameKey} setBookNameKey={setBookNameKey} />
       <Footer />
     </div>
 
