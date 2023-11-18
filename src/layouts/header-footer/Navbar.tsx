@@ -33,9 +33,9 @@ const Navbar: React.FC<NavbarProps> = ({bookNameKey, setBookNameKey}) => {
                                 Thể loại sách
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown1">
-                                <li><a className="dropdown-item" href="#">Thể loại 1</a></li>
-                                <li><a className="dropdown-item" href="#">Thể loại 2</a></li>
-                                <li><a className="dropdown-item" href="#">Thể loại 3</a></li>
+                                <li><a className="dropdown-item" href="/1">Thể loại 1</a></li>
+                                <li><a className="dropdown-item" href="/2">Thể loại 2</a></li>
+                                <li><a className="dropdown-item" href="/3">Thể loại 3</a></li>
                             </ul>
                         </li>
                         <li className="nav-item dropdown">

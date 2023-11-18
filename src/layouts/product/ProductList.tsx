@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import BookModel from "../../models/BookModel";
 import NewBookProps from "./components/NewBookProps";
-import { findBooksByName, getAllBooks } from "../../api/BookAPI";
+import { findBooksByName, findBooksByNameAndCategory, getAllBooks } from "../../api/BookAPI";
 import { error } from "console";
 import { Pagination } from "../utils/Pagination";
 
 interface ProductListProps {
     bookNameKey: string;
+    categoryIdNumber: number;
 }
 
-const ProductList: React.FC<ProductListProps> = ({bookNameKey}) => {
+const ProductList: React.FC<ProductListProps> = ({bookNameKey, categoryIdNumber}) => {
 
     const [bookList, setBookList] = useState<BookModel[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -24,14 +25,15 @@ const ProductList: React.FC<ProductListProps> = ({bookNameKey}) => {
         setCurrentPage(1);
     }
 
-    useEffect(() => {
-        if(bookNameKey === '') {
-            getAllBooks(8, currentPage).then(
+    useEffect(() => {           
+        if(categoryIdNumber === 0){
+            findBooksByName(bookNameKey, 8, currentPage).then(
                 bookData => {
                     setBookList(bookData.result);
                     setTotalPages(bookData.totalPages);
                     setTotalBooks(bookData.totalBooks);
                     setIsLoading(false);
+                    // if(currentPage > totalPages) setCurrentPage(0);
                 }
             ).catch(
                 error => {
@@ -39,8 +41,7 @@ const ProductList: React.FC<ProductListProps> = ({bookNameKey}) => {
                 }
             );
         }else {
-            
-            findBooksByName(bookNameKey, 8, currentPage).then(
+            findBooksByNameAndCategory(bookNameKey, 8, currentPage, categoryIdNumber).then(
                 bookData => {
                     setBookList(bookData.result);
                     setTotalPages(bookData.totalPages);

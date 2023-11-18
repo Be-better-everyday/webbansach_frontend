@@ -1,4 +1,4 @@
-import React from "react";
+
 import BookModel from "../models/BookModel";
 import { my_request } from "./Request";
 
@@ -51,16 +51,14 @@ export async function getThreeNewestBooks(): Promise<bookResultInterface> {
     return getBooks(endpoint);
 };
 
-// export async function findBooksByName(bookName:string) {
-//     let endpoint = `http://localhost:8081/books?page=0&size=8&sort=bookId,asc`;
-//     if(bookName.trim() !== ""){
-//         endpoint = `http://localhost:8081/books/search/findByBookNameContaining?page=0&size=8&sort=bookId,asc&bookName=${bookName}`;
-//     }
-//     return getBooks(endpoint);
-// }
-
 export async function findBooksByName(bookName:string, size: number, currentPage:number): Promise<bookResultInterface> {
     const endpoint = `http://localhost:8081/books/search/findByBookNameContaining?page=${currentPage-1}&size=${size}&sort=bookId,asc&bookName=${bookName}`;
+    console.log(endpoint);
+    return getBooks(endpoint);
+}
+
+export async function findBooksByNameAndCategory(bookName:string, size: number, currentPage:number, categoryId: number): Promise<bookResultInterface> {
+    const endpoint = `http://localhost:8081/books/search/findByBookNameContainingAndBookCategoryList_CategoryId?bookName=${bookName}&categoryId=${categoryId}&page=${currentPage-1}&size=${size}&sort=bookId,asc`;
     console.log(endpoint);
     return getBooks(endpoint);
 }
