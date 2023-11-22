@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ImageModel from "../../../models/ImageModel";
 import { getAllImagesOfBook } from "../../../api/ImageAPI";
 import BookModel from "../../../models/BookModel";
+import { Link } from "react-router-dom";
 
 
 interface NewBookProps {
@@ -54,17 +55,21 @@ const NewBookProps: React.FC<NewBookProps> = ({ book }) => {
     return (
         <div className="col-md-3 mt-2">
             <div className="card">
-                <img
-                    src={dataIcon}
-                    // src={require('./../../../images/books/1.png')}
-                    className="card-img-top"
-                    alt={book.bookName}
-                    style={{ height: '200px' }}
-                />
+                <Link to={`/books/${book.bookId}`}>
+                    <img
+                        src={dataIcon}
+                        // src={require('./../../../images/books/1.png')}
+                        className="card-img-top"
+                        alt={book.bookName}
+                        style={{ height: '200px' }}
+                    />
+                </Link>
 
                 <div className="card-body">
-                    <h5 className="card-title">{book.bookName}</h5>
-                    <p className="card-text">{book.description}</p>
+                    <Link to={`/books/${book.bookId}`} style={{textDecoration:'none'}}>
+                        <h5 className="card-title">{book.bookName}</h5>
+                    </Link>
+                    {/* <p className="card-text">{book.description}</p> */}
                     <div className="price">
                         <span className="original-price">
                             <del>{book.listPrice}</del>

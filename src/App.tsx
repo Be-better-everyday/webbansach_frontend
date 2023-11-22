@@ -5,6 +5,7 @@ import Navbar from "./layouts/header-footer/Navbar";
 import HomePage from "./layouts/homepage/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from "./layouts/about/About";
+import ProductDetail from "./layouts/product/ProductDetail";
 
 function App() {
   const [bookNameKey, setBookNameKey] = useState("");
@@ -21,6 +22,7 @@ function App() {
             <HomePage bookNameKey={bookNameKey} setBookNameKey={setBookNameKey} />
           } />
           <Route path="/about" element={<About/>}></Route>
+          <Route path="/books/:bookId" element={<ProductDetail />} />
         </Routes>
         <Footer />
       </BrowserRouter>
